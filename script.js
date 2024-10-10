@@ -30,8 +30,20 @@ for (let malls of mallsResponse.data) {
     marker.bindPopup(`<h1>${malls.name}</h1>`)
 }
 
+let hdbLayerGroup = L.layerGroup();
+hdbLayerGroup.addTo(singaporeMap);
+
+let hdbResponse = await axios.get("https://gist.githubusercontent.com/kunxin-chor/a5f5cab3e8a6ad0868134334c1432d9a/raw/ca55e99903d5913fc0e701ddab139472fe7fe4fa/hdb.json");
+for (let hdb of hdbResponse.data) {
+    console.log(hdbResponse)
+    let marker = L.marker(hdb.coordinates);
+    marker.addTo(hdbLayerGroup);
+    marker.bindPopup(`<h1>${hdb.name}</h1>`)
+}
+
 let overlays ={
-    "MALLS" : mallsLayerGroup
+    "MALLS" : mallsLayerGroup,
+    "HDB"   : hdbLayerGroup
 }
 
 let layerControl = L.control.layers(overlays);
